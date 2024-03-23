@@ -1,6 +1,7 @@
 import { RouteObject, createBrowserRouter } from "react-router-dom";
 import GuestLayout from "../layouts/GuestLayout";
 import App from "../../App";
+import ImageToPdf from "../views/ImageToPdf";
 
 export const routes: RouteObject[] = [
   {
@@ -12,8 +13,8 @@ export const routes: RouteObject[] = [
         element: <App />,
       },
       {
-        path: "test",
-        element: <h1>testtest</h1>,
+        path: "image-to-pdf",
+        element: <ImageToPdf />,
       },
     ],
   },

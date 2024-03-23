@@ -5,7 +5,9 @@ const GuestLayout = () => {
   return (
     <div className="w-full h-full pt-2 max-w-screen-2xl mx-auto">
       <NavBar />
-      <Outlet />
+      <div className="mx-10 mt-10">
+        <Outlet />
+      </div>
     </div>
   );
 };
