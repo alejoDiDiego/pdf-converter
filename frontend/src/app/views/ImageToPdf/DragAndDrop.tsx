@@ -36,7 +36,7 @@ const SortableItem = SortableElement(
     handleDelete: (id: string) => void;
   }) => {
     return (
-      <div className="relative flex justify-center items-center bg-white w-[127px] h-[180px] rounded-md">
+      <div className="relative flex justify-center items-center bg-white w-[127px] h-[180px] rounded-md transition-[outline] hover:outline hover:outline-4 outline-blue-500">
         <div className="absolute top-2 left-2 bg-black bg-opacity-50 rounded-md flex justify-center items-center gap-1">
           <img
             src="drag.png"
