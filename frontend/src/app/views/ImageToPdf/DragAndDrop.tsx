@@ -10,7 +10,7 @@ const ImagesList = SortableContainer(
     handleDelete: (id: string) => void;
   }) => {
     return (
-      <div className=" bg-blue-300 rounded p-2 flex flex-wrap justify-center items-center  w-full gap-5">
+      <div className=" rounded p-2 flex flex-wrap justify-center items-center w-1/2 gap-5">
         {images.map((image: Image, index: number) => (
           <SortableItem
             key={image.id}
@@ -36,7 +36,14 @@ const SortableItem = SortableElement(
     handleDelete: (id: string) => void;
   }) => {
     return (
-      <div className="relative flex justify-center items-center bg-white w-[127px] h-[180px]">
+      <div className="relative flex justify-center items-center bg-white w-[127px] h-[180px] rounded-md">
+        <div className="absolute top-2 left-2 bg-black bg-opacity-50 rounded-md flex justify-center items-center gap-1">
+          <img
+            src="drag.png"
+            className="w-6 h-6 cursor-pointer select-none pointer-events-none"
+          />
+        </div>
+
         <div className="absolute top-2 right-2 bg-black bg-opacity-50 px-2 rounded-md flex justify-center items-center gap-1 select-none">
           <img
             onClick={(event: any) => {
@@ -108,4 +115,8 @@ export default DragAndDrop;
 
 {
   /* <a href="https://www.flaticon.com/free-icons/close" title="close icons">Close icons created by icon wind - Flaticon</a> */
+}
+
+{
+  /* <a href="https://www.flaticon.com/free-icons/drag-and-drop" title="drag and drop icons">Drag and drop icons created by fulmal - Flaticon</a> */
 }
