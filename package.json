@@ -1,5 +1,10 @@
 {
   "devDependencies": {
     "@types/react-beautiful-dnd": "^13.1.8"
+  },
+  "dependencies": {
+    "@types/array-move": "^2.0.0",
+    "array-move": "^4.0.0",
+    "react-sortable-hoc": "^2.0.0"
   }
 }

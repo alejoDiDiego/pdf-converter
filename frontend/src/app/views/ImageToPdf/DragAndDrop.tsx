@@ -1,26 +1,26 @@
-import { useState } from "react";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
+import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import Image from "../../models/Image";
 
-// const data = [
-//   {
-//     id: "weqndi21idn219d82db1o0b",
-//     name: "Image 1",
-//   },
-//   {
-//     id: "2e12dsdasdwdw1dwd2e",
-//     name: "Image 2",
-//   },
-//   {
-//     id: "dikwqndi21ndi12neindso",
-//     name: "Image 3",
-//   },
-// ];
+const ImagesList = SortableContainer(({ images }: { images: Image[] }) => {
+  return (
+    <div className=" bg-blue-300 rounded p-2 flex flex-wrap justify-center w-full gap-5">
+      {images.map((image: Image, index: number) => (
+        <SortableItem key={image.id} index={index} i={index} image={image} />
+      ))}
+    </div>
+  );
+});
+
+const SortableItem = SortableElement(
+  ({ image, i }: { image: Image; i: number }) => (
+    <div className="relative">
+      <p className="absolute top-0 right-0 bg-black bg-opacity-50 text-white p-1 rounded-md">
+        {i + 1}
+      </p>
+      <img src={image.preview} alt="preview" className="w-72 rounded-md" />
+    </div>
+  )
+);
 
 const DragAndDrop = ({
   images,
@@ -29,59 +29,28 @@ const DragAndDrop = ({
   images: Image[];
   setImages: (images: Image[]) => void;
 }) => {
-  const handleDragDrop = (result: DropResult) => {
-    const { source, destination, type } = result;
-
-    if (!destination) return;
-
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    )
-      return;
-
-    if (type === "group") {
-      const newImages = [...images];
-      const [removed] = newImages.splice(source.index, 1);
-      newImages.splice(destination.index, 0, removed);
-
-      setImages(newImages);
+  function moveArrayItem(array: any[], oldIndex: number, newIndex: number) {
+    if (newIndex >= array.length) {
+      let k = newIndex - array.length + 1;
+      while (k--) {
+        array.push(undefined);
+      }
     }
+    array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+    return array; // for testing purposes
+  }
+
+  const onSortEnd = ({
+    oldIndex,
+    newIndex,
+  }: {
+    oldIndex: number;
+    newIndex: number;
+  }) => {
+    setImages(moveArrayItem(images, oldIndex, newIndex));
   };
 
-  return (
-    <DragDropContext onDragEnd={handleDragDrop}>
-      <Droppable droppableId="ROOT" type="group" direction="horizontal">
-        {(provided) => (
-          <div
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="flex w-96 flex-wrap items-center"
-          >
-            {images.map((image, index) => (
-              <Draggable draggableId={image.id} key={image.id} index={index}>
-                {(provided) => (
-                  <div
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                    className="flex gap-2 bg-white rounded-md m-2"
-                  >
-                    <img
-                      src={image.preview}
-                      alt="preview"
-                      className="w-20 h-20 rounded-md"
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
-  );
+  return <ImagesList images={images} onSortEnd={onSortEnd} axis="xy" />;
 };
 
 export default DragAndDrop;
