@@ -49,23 +49,24 @@ const SortableItem = SortableElement(
             : "h-[127px] w-[180px]"
         }`}
       >
-        <div className="absolute top-2 left-2 bg-black bg-opacity-50 rounded-md flex justify-center items-center gap-1">
+        <div className="absolute top-0 bg-black/60 px-2 py-0.5 rounded-b flex justify-center items-center gap-2 select-none">
           <img
             src="drag.png"
-            className="w-6 h-6 cursor-pointer select-none pointer-events-none"
+            className="w-5 h-5 -mr-1 cursor-pointer select-none pointer-events-none"
           />
-        </div>
-
-        <div className="absolute top-2 right-2 bg-black bg-opacity-50 px-2 rounded-md flex justify-center items-center gap-1 select-none">
+          <img
+            src="rotating-arrow-symbol.png"
+            className="w-3 h-3 cursor-pointer select-none "
+          />
           <img
             onClick={(event: any) => {
               event.stopPropagation();
               handleDelete(image.id);
             }}
             src="cross.png"
-            className="w-5 h-5 cursor-pointer"
+            className="w-4 h-4 cursor-pointer"
           />
-          <span className=" text-white ">{i + 1}</span>
+          <span className=" text-white text-sm">{i + 1}</span>
         </div>
         <img
           src={image.preview}
@@ -140,4 +141,7 @@ export default DragAndDrop;
 
 {
   /* <a href="https://www.flaticon.com/free-icons/drag-and-drop" title="drag and drop icons">Drag and drop icons created by fulmal - Flaticon</a> */
+}
+{
+  /* <a href="https://www.flaticon.com/free-icons/segmented-circle-arrow" title="segmented circle arrow icons">Segmented circle arrow icons created by Freepik - Flaticon</a> */
 }
