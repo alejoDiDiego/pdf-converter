@@ -1,3 +1,4 @@
+import DragAndDrop from "./DragAndDrop";
 import MyDropzone from "./Dropzone";
 
 const ImageToPdf = () => {
@@ -7,6 +8,7 @@ const ImageToPdf = () => {
         Image to PDF
       </h1>
       <MyDropzone />
+      <DragAndDrop />
     </div>
   );
 };
