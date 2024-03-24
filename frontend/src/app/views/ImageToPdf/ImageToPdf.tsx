@@ -3,14 +3,22 @@ import DragAndDrop from "./DragAndDrop";
 import MyDropzone from "./Dropzone";
 import Image from "../../models/Image";
 import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
+import Options from "./Options";
+import TOptions from "../../models/TOptions";
 
 const ImageToPdf = () => {
   const [images, setImages] = useState<Image[]>([]);
+  const [options, setOptions] = useState<TOptions>({
+    orientation: "portrait",
+    margin: 0,
+  });
 
-  const convertToPdf = async () => {
-    const doc = new jsPDF();
-    const margin = 10; // Establece el margen en unidades de medida del PDF (por defecto, milímetros)
+  const convertToPdf = async (
+    images: Image[],
+    orientation: any,
+    margin: number
+  ) => {
+    const doc = new jsPDF(orientation, "px", "a4");
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
@@ -66,9 +74,12 @@ const ImageToPdf = () => {
         Image to PDF
       </h1>
       <MyDropzone images={images} setImages={setImages} />
+      <Options options={options} setOptions={setOptions} />
       <DragAndDrop images={images} setImages={setImages} />
       <button
-        onClick={convertToPdf}
+        onClick={() =>
+          convertToPdf(images, options.orientation, options.margin)
+        }
         className="bg-blue-500 text-white px-3 py-1 rounded-md"
       >
         Convert to PDF
