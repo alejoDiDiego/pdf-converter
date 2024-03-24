@@ -43,7 +43,7 @@ const SortableItem = SortableElement(
   }) => {
     return (
       <div
-        className={`relative flex justify-center items-center bg-white rounded-md transition-[outline] hover:outline hover:outline-4 outline-blue-500 cursor-move ${
+        className={`relative flex justify-center items-center bg-white rounded-sm transition-[outline] hover:outline hover:outline-4 outline-blue-500 cursor-move ${
           options.orientation === "portrait"
             ? "w-[127px] h-[180px]"
             : "h-[127px] w-[180px]"
@@ -71,11 +71,11 @@ const SortableItem = SortableElement(
           src={image.preview}
           alt="preview"
           className={`w-auto object-contain select-none pointer-events-none ${
-            options.margin == 0
+            options.margin == "no"
               ? "max-w-[100%] h-[100%]"
-              : options.margin == 10
+              : options.margin == "small"
               ? "max-w-[90%] h-[90%]"
-              : "max-w-[85%] h-[85%]"
+              : "max-w-[80%] h-[80%]"
           }`}
         />
       </div>

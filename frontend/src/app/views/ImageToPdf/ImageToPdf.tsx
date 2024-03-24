@@ -10,15 +10,27 @@ const ImageToPdf = () => {
   const [images, setImages] = useState<Image[]>([]);
   const [options, setOptions] = useState<TOptions>({
     orientation: "portrait",
-    margin: 0,
+    margin: "no",
   });
 
-  const convertToPdf = async (
-    images: Image[],
-    orientation: any,
-    margin: number
-  ) => {
-    const doc = new jsPDF(orientation, "px", "a4");
+  const convertToPdf = async (images: Image[], options: TOptions) => {
+    const doc = new jsPDF(options.orientation, "px", "a4");
+
+    let margin = 0;
+    switch (options.margin) {
+      case "no":
+        margin = 0;
+        break;
+      case "small":
+        margin = 20;
+        break;
+      case "big":
+        margin = 40;
+        break;
+      default:
+        margin = 0;
+        break;
+    }
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
@@ -77,9 +89,7 @@ const ImageToPdf = () => {
       <Options options={options} setOptions={setOptions} />
       <DragAndDrop images={images} setImages={setImages} options={options} />
       <button
-        onClick={() =>
-          convertToPdf(images, options.orientation, options.margin)
-        }
+        onClick={() => convertToPdf(images, options)}
         className="bg-blue-500 text-white px-3 py-1 rounded-md"
       >
         Convert to PDF

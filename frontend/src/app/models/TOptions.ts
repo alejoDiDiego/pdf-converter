@@ -1,6 +1,6 @@
 type TOptions = {
   orientation: any;
-  margin: number;
+  margin: string;
 };
 
 export default TOptions;

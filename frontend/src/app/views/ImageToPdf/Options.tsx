@@ -42,15 +42,15 @@ const Options = ({
         <div className="bg-white flex items-center justify-center h-full gap-2 w-full p-4 rounded-b">
           {[
             {
-              value: 0,
+              value: "no",
               label: "No Margin",
             },
             {
-              value: 10,
+              value: "small",
               label: "Small Margin",
             },
             {
-              value: 20,
+              value: "big",
               label: "Big Margin",
             },
           ].map((margin) => (
