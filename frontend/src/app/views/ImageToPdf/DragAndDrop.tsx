@@ -3,28 +3,32 @@ import {
   DragDropContext,
   Droppable,
   Draggable,
-  DragDropContextProps,
   DropResult,
 } from "react-beautiful-dnd";
+import Image from "../../models/Image";
 
-const data = [
-  {
-    id: "weqndi21idn219d82db1o0b",
-    name: "Image 1",
-  },
-  {
-    id: "2e12dsdasdwdw1dwd2e",
-    name: "Image 2",
-  },
-  {
-    id: "dikwqndi21ndi12neindso",
-    name: "Image 3",
-  },
-];
+// const data = [
+//   {
+//     id: "weqndi21idn219d82db1o0b",
+//     name: "Image 1",
+//   },
+//   {
+//     id: "2e12dsdasdwdw1dwd2e",
+//     name: "Image 2",
+//   },
+//   {
+//     id: "dikwqndi21ndi12neindso",
+//     name: "Image 3",
+//   },
+// ];
 
-const DragAndDrop = () => {
-  const [images, setImages] = useState(data);
-
+const DragAndDrop = ({
+  images,
+  setImages,
+}: {
+  images: Image[];
+  setImages: (images: Image[]) => void;
+}) => {
   const handleDragDrop = (result: DropResult) => {
     const { source, destination, type } = result;
 
@@ -52,7 +56,7 @@ const DragAndDrop = () => {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex"
+            className="flex w-96 flex-wrap items-center"
           >
             {images.map((image, index) => (
               <Draggable draggableId={image.id} key={image.id} index={index}>
@@ -61,10 +65,13 @@ const DragAndDrop = () => {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
-                    key={image.id}
-                    className="flex gap-2 bg-white rounded-md mx-1"
+                    className="flex gap-2 bg-white rounded-md m-2"
                   >
-                    <p>{image.name}</p>
+                    <img
+                      src={image.preview}
+                      alt="preview"
+                      className="w-20 h-20 rounded-md"
+                    />
                   </div>
                 )}
               </Draggable>
