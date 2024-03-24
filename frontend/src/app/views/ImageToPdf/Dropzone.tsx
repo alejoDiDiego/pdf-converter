@@ -27,7 +27,10 @@ const MyDropzone = ({
     [images, setImages]
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    accept: { "image/*": [] },
+  });
 
   return (
     <div
@@ -38,7 +41,7 @@ const MyDropzone = ({
       {isDragActive ? (
         <p>Drop the files here ...</p>
       ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
+        <p>Drop your images here, or click to select</p>
       )}
     </div>
   );
