@@ -21,6 +21,7 @@ const Menu = ({ isOpen }: { isOpen: boolean }) => {
     >
       {links.map((link) => (
         <a
+          key={link.name}
           href={link.url}
           className="block px-2 py-1 text-white hover:bg-white hover:text-black text-center"
         >
