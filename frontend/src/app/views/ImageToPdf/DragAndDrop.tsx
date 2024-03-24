@@ -70,7 +70,13 @@ const SortableItem = SortableElement(
         <img
           src={image.preview}
           alt="preview"
-          className="w-auto max-w-[90%] h-[90%] object-contain select-none pointer-events-none"
+          className={`w-auto object-contain select-none pointer-events-none ${
+            options.margin == 0
+              ? "max-w-[100%] h-[100%]"
+              : options.margin == 10
+              ? "max-w-[90%] h-[90%]"
+              : "max-w-[85%] h-[85%]"
+          }`}
         />
       </div>
     );
