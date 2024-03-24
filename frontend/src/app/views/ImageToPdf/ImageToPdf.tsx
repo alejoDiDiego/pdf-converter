@@ -10,17 +10,19 @@ const ImageToPdf = () => {
 
   const convertToPdf = async () => {
     const doc = new jsPDF();
+    const margin = 10; // Establece el margen en unidades de medida del PDF (por defecto, milímetros)
+
     for (let i = 0; i < images.length; i++) {
       const image = images[i];
       const response = await fetch(image.preview);
       const blob = await response.blob();
       const img = await createImageBitmap(blob);
       const canvas = document.createElement("canvas");
-      canvas.width = img.width; // Ajusta el ancho del canvas al ancho de la imagen
-      canvas.height = img.height; // Ajusta el alto del canvas al alto de la imagen
+      canvas.width = img.width;
+      canvas.height = img.height;
       const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.drawImage(img, 0, 0, img.width, img.height); // Dibuja la imagen en el canvas
+        ctx.drawImage(img, 0, 0, img.width, img.height);
         const imgData = canvas.toDataURL("image/png");
 
         const pdfPageWidth = doc.internal.pageSize.getWidth();
@@ -29,26 +31,30 @@ const ImageToPdf = () => {
         const imageAspectRatio = img.width / img.height;
         const pdfPageAspectRatio = pdfPageWidth / pdfPageHeight;
 
-        let width = pdfPageWidth;
-        let height = pdfPageHeight;
+        let width = pdfPageWidth - 2 * margin; // Resta el margen del ancho
+        let height = pdfPageHeight - 2 * margin; // Resta el margen de la altura
 
+        // Ajusta el ancho o la altura según la relación de aspecto
         if (imageAspectRatio > pdfPageAspectRatio) {
           height = width / imageAspectRatio;
-        } else if (imageAspectRatio < pdfPageAspectRatio) {
+        } else {
           width = height * imageAspectRatio;
         }
 
-        // Calcula las coordenadas x e y para centrar la imagen
-        let x = (pdfPageWidth - width) / 2;
-        let y = (pdfPageHeight - height) / 2;
+        // Calcula las coordenadas x e y para centrar la imagen en la página
+        const x = (pdfPageWidth - width) / 2;
+        const y = (pdfPageHeight - height) / 2;
 
+        // Añade la imagen al PDF en las coordenadas x e y
         doc.addImage(imgData, "PNG", x, y, width, height);
-        if (i < images.length - 1) {
-          doc.addPage();
-        }
+      }
+
+      if (i < images.length - 1) {
+        doc.addPage();
       }
     }
-    doc.save("image-to-pdf.pdf");
+
+    doc.save("download.pdf");
   };
 
   useEffect(() => {
