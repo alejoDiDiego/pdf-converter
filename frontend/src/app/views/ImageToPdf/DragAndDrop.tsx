@@ -1,16 +1,19 @@
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import Image from "../../models/Image";
 import TOptions from "../../models/TOptions";
+import { useState } from "react";
 
 const ImagesList = SortableContainer(
   ({
     images,
     handleDelete,
     options,
+    handleRotate,
   }: {
     images: Image[];
     handleDelete: (id: string) => void;
     options: TOptions;
+    handleRotate: (id: string) => void;
   }) => {
     return (
       <div className=" rounded p-2 flex flex-wrap justify-center items-center w-1/2 gap-5">
@@ -22,6 +25,7 @@ const ImagesList = SortableContainer(
             image={image}
             handleDelete={handleDelete}
             options={options}
+            handleRotate={handleRotate}
           />
         ))}
       </div>
@@ -35,11 +39,13 @@ const SortableItem = SortableElement(
     i,
     handleDelete,
     options,
+    handleRotate,
   }: {
     image: Image;
     i: number;
     handleDelete: (id: string) => void;
     options: TOptions;
+    handleRotate: (id: string) => void;
   }) => {
     return (
       <div
@@ -47,7 +53,8 @@ const SortableItem = SortableElement(
           options.orientation === "portrait"
             ? "w-[127px] h-[180px]"
             : "h-[127px] w-[180px]"
-        }`}
+        }
+        `}
       >
         <div className="absolute top-0 bg-black/60 px-2 py-0.5 rounded-b flex justify-center items-center gap-2 select-none">
           <img
@@ -57,6 +64,10 @@ const SortableItem = SortableElement(
           <img
             src="rotating-arrow-symbol.png"
             className="w-3 h-3 cursor-pointer select-none "
+            onClick={(event: any) => {
+              event.stopPropagation();
+              handleRotate(image.id);
+            }}
           />
           <img
             onClick={(event: any) => {
@@ -71,7 +82,7 @@ const SortableItem = SortableElement(
         <img
           src={image.preview}
           alt="preview"
-          className={`w-auto object-contain select-none pointer-events-none ${
+          className={` object-contain select-none pointer-events-none ${
             options.margin == "no"
               ? "max-w-[100%] h-[100%]"
               : options.margin == "small"
@@ -109,6 +120,37 @@ const DragAndDrop = ({
     setImages(newImages);
   };
 
+  const handleRotate = async (id: string) => {
+    const image = images.find((image) => image.id === id);
+    if (!image) return;
+
+    const response = await fetch(image.preview);
+    const blob = await response.blob();
+    const bitmap = await createImageBitmap(blob);
+
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // Set the canvas dimensions to the image dimensions
+    canvas.width = bitmap.height;
+    canvas.height = bitmap.width;
+
+    // Translate and rotate the context
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate((90 * Math.PI) / 180);
+
+    // Draw the image onto the context
+    ctx.drawImage(bitmap, -bitmap.width / 2, -bitmap.height / 2);
+
+    // Update the image preview with the rotated image
+    const rotatedImagePreview = canvas.toDataURL();
+    const rotatedImage = { ...image, preview: rotatedImagePreview };
+
+    // Update the images state
+    setImages(images.map((image) => (image.id === id ? rotatedImage : image)));
+  };
+
   const onSortEnd = ({
     oldIndex,
     newIndex,
@@ -125,6 +167,7 @@ const DragAndDrop = ({
         (e.target as HTMLElement).tagName.toLowerCase() === "img"
       }
       options={options}
+      handleRotate={handleRotate}
       handleDelete={handleDelete}
       images={images}
       onSortEnd={onSortEnd}
