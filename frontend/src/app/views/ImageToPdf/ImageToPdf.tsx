@@ -75,7 +75,7 @@ const ImageToPdf = () => {
       </h1>
       <MyDropzone images={images} setImages={setImages} />
       <Options options={options} setOptions={setOptions} />
-      <DragAndDrop images={images} setImages={setImages} />
+      <DragAndDrop images={images} setImages={setImages} options={options} />
       <button
         onClick={() =>
           convertToPdf(images, options.orientation, options.margin)

@@ -1,13 +1,16 @@
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import Image from "../../models/Image";
+import TOptions from "../../models/TOptions";
 
 const ImagesList = SortableContainer(
   ({
     images,
     handleDelete,
+    options,
   }: {
     images: Image[];
     handleDelete: (id: string) => void;
+    options: TOptions;
   }) => {
     return (
       <div className=" rounded p-2 flex flex-wrap justify-center items-center w-1/2 gap-5">
@@ -18,6 +21,7 @@ const ImagesList = SortableContainer(
             i={index}
             image={image}
             handleDelete={handleDelete}
+            options={options}
           />
         ))}
       </div>
@@ -30,13 +34,21 @@ const SortableItem = SortableElement(
     image,
     i,
     handleDelete,
+    options,
   }: {
     image: Image;
     i: number;
     handleDelete: (id: string) => void;
+    options: TOptions;
   }) => {
     return (
-      <div className="relative flex justify-center items-center bg-white w-[127px] h-[180px] rounded-md transition-[outline] hover:outline hover:outline-4 outline-blue-500 cursor-move">
+      <div
+        className={`relative flex justify-center items-center bg-white rounded-md transition-[outline] hover:outline hover:outline-4 outline-blue-500 cursor-move ${
+          options.orientation === "portrait"
+            ? "w-[127px] h-[180px]"
+            : "h-[127px] w-[180px]"
+        }`}
+      >
         <div className="absolute top-2 left-2 bg-black bg-opacity-50 rounded-md flex justify-center items-center gap-1">
           <img
             src="drag.png"
@@ -68,9 +80,11 @@ const SortableItem = SortableElement(
 const DragAndDrop = ({
   images,
   setImages,
+  options,
 }: {
   images: Image[];
   setImages: (images: Image[]) => void;
+  options: TOptions;
 }) => {
   function moveArrayItem(array: any[], oldIndex: number, newIndex: number) {
     if (newIndex >= array.length) {
@@ -103,6 +117,7 @@ const DragAndDrop = ({
       shouldCancelStart={(e) =>
         (e.target as HTMLElement).tagName.toLowerCase() === "img"
       }
+      options={options}
       handleDelete={handleDelete}
       images={images}
       onSortEnd={onSortEnd}
