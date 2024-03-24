@@ -51,7 +51,7 @@ const SortableItem = SortableElement(
         <img
           src={image.preview}
           alt="preview"
-          className="w-auto max-h-[90%] select-none pointer-events-none"
+          className="w-auto h-[90%] object-contain select-none pointer-events-none"
         />
       </div>
     );
